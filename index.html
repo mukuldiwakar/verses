@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verses</title>
+<style>
+  /* Reset default margin and padding */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('https://i.postimg.cc/qMR0RY1n/cherry.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    padding: 20px; /* Add padding to center content */
+  }
+
+  .container {
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent white (10% opacity) */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .verse-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Transparent white (10% opacity) */
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+  }
+
+  .verse-text {
+    font-style: italic;
+    color: #030000;
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .verse-translation {
+    color: #120101;
+    font-size: 1em;
+  }
+
+  .update-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    animation: pulse 2s infinite;
+  }
+
+  .update-button:hover {
+    background-color: #45a049;
+  }
+
+  .clock-container {
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .footer {
+    margin-top: 20px;
+    color: #fff;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="verse-container">
+    <div id="verse-text" class="verse-text"></div>
+    <button class="update-button" onclick="updateVerse()">Update Bhagavad Gita Verse</button>
+  </div>
+  <div class="clock-container">
+    <!-- Digital Clock Widget -->
+    <script src="https://cdn.logwork.com/widget/digital.js"></script>
+    <a href="https://logwork.com/current-time-in-jaipur-india-uttar-pradesh" class="digital-clock" data-style="flip" data-size="500" data-timezone="Asia/Kolkata" data-language="en">Jaipur, India</a>
+  </div>
+  <div class="verse-container">
+    <div id="bible-verse" class="verse-text"></div>
+    <button class="update-button" onclick="updateBibleVerse()">Update Bible Verse</button>
+  </div>
+  <div class="footer">
+    Created by Mukul Diwakar
+  </div>
+</div>
+
+<script>
+  // Define Bhagavad Gita verses
+  const gitaVerses = [
+    {
+      sanskrit: "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।",
+      translation: "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions.",
+      chapter: "Chapter 2, Verse 47"
+    },
+    {
+      sanskrit: "बुद्धियुक्तो जहातीह उभे सुकृतदुष्कृते।",
+      translation: "A person who is endowed with wisdom casts aside here both good and bad actions.",
+      chapter: "Chapter 2, Verse 50"
+    },
+    {
+      sanskrit: "विषया विनिवर्तन्ते निराहारस्य देहिनः।",
+      translation: "The embodied soul may restrain the senses from their objects of enjoyment, but the taste for the sense objects remains. Withdrawal from sense objects is difficult for one who is fasting.",
+      chapter: "Chapter 2, Verse 59"
+    },
+    {
+      sanskrit: "एवं प्रवर्तितं चक्रं नानुवर्तयतीह यः।",
+      translation: "My dear Arjuna, one who does not follow in human life the cycle of sacrifice established by the Vedas certainly leads a life full of sin. Living only for the satisfaction of the senses, such a person lives in vain.",
+      chapter: "Chapter 3, Verse 16"
+    },
+    {
+      sanskrit: "यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।",
+      translation: "Whenever and wherever there is a decline in religious practice, O descendant of Bharata, and a predominant rise of irreligion—at that time I descend Myself.",
+      chapter: "Chapter 4, Verse 7"
+    }
+  ];
+
+  // Define Bible verses
+  const bibleVerses = [
+    {
+      verse: '"For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life." - John 3:16 (NIV)'
+    },
+    {
+      verse: '"I can do all this through him who gives me strength." - Philippians 4:13 (NIV)'
+    },
+    {
+      verse: '"The Lord is my shepherd; I shall not want." - Psalm 23:1 (KJV)'
+    },
+    {
+      verse: '"For I know the plans I have for you, declares the Lord, plans for welfare and not for evil, to give you a future and a hope." - Jeremiah 29:11 (ESV)'
+    }
+  ];
+
+  // Function to update the displayed Bhagavad Gita verse
+  function updateVerse() {
+    const randomIndex = Math.floor(Math.random() * gitaVerses.length);
+    const randomVerse = gitaVerses[randomIndex];
+    const verseText = `
+      <div class="verse-text">${randomVerse.sanskrit}</div>
+      <div class="verse-translation">${randomVerse.translation} (${randomVerse.chapter})</div>
+    `;
+    document.getElementById("verse-text").innerHTML = verseText;
+  }
+
+  // Function to update the displayed Bible verse
+  function updateBibleVerse() {
+    const randomIndex = Math.floor(Math.random() * bibleVerses.length);
+    const randomVerse = bibleVerses[randomIndex];
+    const verseText = `
+      <div class="verse-text">${randomVerse.verse}</div>
+    `;
+    document.getElementById("bible-verse").innerHTML = verseText;
+  }
+
+  // Initialize with a random Bhagavad Gita verse and Bible verse
+  updateVerse();
+  updateBibleVerse();
+</script>
+</body>
+</html>
